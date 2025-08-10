@@ -21,8 +21,12 @@ export function Subscribe({
 		INITIAL_STATE
 	);
 
-	console.log(formState, "form Stat");
 	const zodErrors = formState?.zodErrors?.email;
+	const strapiErrors = formState?.strapiErrors?.message;
+
+	const errorMessage = strapiErrors || zodErrors || formState?.errorMessage;
+	const successMessage = formState?.successMessage;
+
 	return (
 		<section className="newsletter container">
 			<div className="newsletter__info">
@@ -33,9 +37,9 @@ export function Subscribe({
 				<input
 					name="email"
 					type="email"
-					placeholder={zodErrors || placeholder}
+					placeholder={errorMessage || successMessage || placeholder}
 					className={`newsletter__email ${
-						zodErrors ? "newsletter__email--error" : ""
+						errorMessage ? "newsletter__email--error" : ""
 					}`}
 				/>
 				<button
