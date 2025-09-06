@@ -137,3 +137,21 @@ export async function getGlobalSettings() {
 	url.search = globalSettingQuery;
 	return fetchAPI(url.href, { method: "GET" });
 }
+
+export async function getContent(path: string, featured?: boolean) {
+	const url = new URL(path, BASE_URL);
+
+	url.search = qs.stringify({
+		sort: ["createdAt:desc"],
+		filters: {
+			...(featured && { featured: { $eq: featured } }),
+		},
+		populate: {
+			image: {
+				fields: ["url", "alternativeText"],
+			},
+		},
+	});
+
+	return fetchAPI(url.href, { method: "GET" });
+}
